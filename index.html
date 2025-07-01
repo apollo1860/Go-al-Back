@@ -158,21 +158,22 @@
     const liveScoreEl = document.getElementById("live-score");
     const errorOverlay = document.getElementById("errorOverlay");
 
-    function shuffle(arr) {
-      return arr.sort(() => Math.random() - 0.5);
-    }
+  function shuffle(arr) {
+  return arr.sort(() => Math.random() - 0.5);
+}
 
-    function startGame() {
-      currentIndex = 0;
-      timeline = [events[currentIndex++]];
-      renderTimeline();
-      loadNextEvent();
-      updateLiveScore();
-      gameOverDueToError = false;
-      errorOverlay.classList.remove("visible");
-      gameOverEl.classList.add("hidden");
-      nextEventEl.classList.remove("hidden");
-    }
+   function startGame() {
+  events = shuffle([...events]); // Kopie erstellen und mischen
+  currentIndex = 0;
+  timeline = [events[currentIndex++]];
+  renderTimeline();
+  loadNextEvent();
+  updateLiveScore();
+  gameOverDueToError = false;
+  errorOverlay.classList.remove("visible");
+  gameOverEl.classList.add("hidden");
+  nextEventEl.classList.remove("hidden");
+}
 
     function renderTimeline() {
       timelineEl.innerHTML = "";
