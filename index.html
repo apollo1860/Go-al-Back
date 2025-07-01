@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fußball Flashback</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f6f6f6;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      overflow-x: hidden;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      position: relative;
+      z-index: 1;
+    }
+    h1 {
+      margin-bottom: 5px;
+    }
+    .score-display {
+      margin-top: 0;
+      font-size: 1rem;
+      color: #333;
+    }
+    .label {
+      font-size: 0.9em;
+      color: #555;
+      margin: 6px 0 2px;
+    }
+    .timeline {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0;
+      border-left: 2px solid #ccc;
+      min-height: 50px;
+    }
+    .timeline li {
+      background: white;
+      margin: 8px;
+      padding: 12px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: relative;
+      transition: transform 0.2s;
+    }
+    .timeline li:hover {
+      transform: scale(1.02);
+    }
+    .timeline li .year {
+      font-size: 0.8em;
+      color: #888;
+      margin-top: 4px;
+    }
+    .placeholder {
+      background: #e0e0e0;
+      border: 2px dashed #bbb;
+      margin: 6px 0;
+      height: 40px;
+      border-radius: 4px;
+    }
+    #next-event-container {
+      margin-top: 30px;
+    }
+    #next-event {
+      display: inline-block;
+      padding: 12px 18px;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: grab;
+      transition: transform 0.2s;
+    }
+    #next-event:active {
+      cursor: grabbing;
+    }
+    .hidden {
+      display: none;
+    }
+    #game-over {
+      margin-top: 30px;
+    }
+
+    /* Fehler-Overlay */
+    #errorOverlay {
+      background-color: rgba(255, 0, 0, 0.9);
+      color: white;
+      font-size: 1.4em;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      width: 100%;
+      height: 100%;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    #errorOverlay.visible {
+      display: flex;
+    }
+
+    #errorOverlay button {
+      margin: 10px;
+      font-size: 1em;
+      padding: 10px 20px;
+      background: white;
+      color: red;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #errorOverlay button:hover {
+      background: #eee;
+    }
+  </style>
+</head>
+<body>
+  <div id="errorOverlay">
+    <div>❌ Falsch einsortiert!</div>
+    <button onclick="dismissError()">OK</button>
+    <button onclick="restartGame()">Neustart</button>
+  </div>
+
+  <div class="container">
+    <h1>⚽ Fußball Flashback</h1>
+    <p class="score-display">✅ Richtige Platzierungen: <span id="live-score">0</span></p>
+    <div class="label">🕰️ Früher</div>
+    <ul id="timeline" class="timeline"></ul>
+    <div class="label">⏳ Später</div>
+    <div id="next-event-container">
+      <div id="next-event" draggable="true">Lade Ereignis...</div>
+    </div>
+    <div id="game-over" class="hidden">
+      <h2>Spiel beendet!</h2>
+      <p>Du hast <span id="score">0</span> Ereignisse korrekt eingeordnet.</p>
+      <button onclick="restartGame()">Neustart</button>
+    </div>
+  </div>
+
+  <script>
+    const allEvents = [
+      { event: "Pelé gewinnt seine erste WM mit Brasilien", year: 1958 },
+      { event: "Deutschland gewinnt zum ersten Mal die WM", year: 1954 },
+      { event: "Schalke verpasst die Meisterschaft", year: 2001 },
+      { event: "Benzema gewinnt den Ballon d'Or", year: 2022 },
+      { event: "Messi verlässt Barcelona", year: 2021 },
+      { event: "VAR wird bei WM eingesetzt", year: 2018 },
+      { event: "England gewinnt erstmals Frauen-EM", year: 2022 },
+      { event: "Deutschland schlägt Brasilien 7:1", year: 2014 }
+    ];
+
+    let events = [];
+    let timeline = [];
+    let currentIndex = 0;
+    let nextEvent = null;
+    let gameOverDueToError = false;
+
+    const timelineEl = document.getElementById("timeline");
+    const nextEventEl = document.getElementById("next-event");
+    const gameOverEl = document.getElementById("game-over");
+    const scoreEl = document.getElementById("score");
+    const liveScoreEl = document.getElementById("live-score");
+    const errorOverlay = document.getElementById("errorOverlay");
+
+    function shuffle(arr) {
+      return arr.sort(() => Math.random() - 0.5);
+    }
+
+    function startGame() {
+      events = shuffle([...allEvents]);
+      currentIndex = 0;
+      timeline = [events[currentIndex++]];
+      renderTimeline();
+      loadNextEvent();
+      updateLiveScore();
+      gameOverDueToError = false;
+      errorOverlay.classList.remove("visible");
+      gameOverEl.classList.add("hidden");
+      nextEventEl.classList.remove("hidden");
+    }
+
+    function renderTimeline() {
+      timelineEl.innerHTML = "";
+
+      for (let i = 0; i <= timeline.length; i++) {
+        const placeholder = document.createElement("li");
+        placeholder.classList.add("placeholder");
+        placeholder.dataset.index = i;
+        placeholder.ondragover = e => e.preventDefault();
+        placeholder.ondrop = e => {
+          e.preventDefault();
+          const data = e.dataTransfer.getData("text/plain");
+          if (data === "drop-event") {
+            handleDrop(i);
+          }
+        };
+        timelineEl.appendChild(placeholder);
+
+        if (i < timeline.length) {
+          const li = document.createElement("li");
+          li.textContent = timeline[i].event;
+          const year = document.createElement("div");
+          year.classList.add("year");
+          year.textContent = timeline[i].year;
+          li.appendChild(year);
+          timelineEl.appendChild(li);
+        }
+      }
+    }
+
+    function loadNextEvent() {
+      if (currentIndex >= events.length) {
+        endGame();
+        return;
+      }
+
+      nextEvent = events[currentIndex++];
+      nextEventEl.textContent = nextEvent.event;
+
+      nextEventEl.ondragstart = (e) => {
+        e.dataTransfer.setData("text/plain", "drop-event");
+      };
+    }
+
+    function handleDrop(position) {
+      const before = timeline[position - 1]?.year ?? -Infinity;
+      const after = timeline[position]?.year ?? Infinity;
+
+      const sameAsBefore = before === nextEvent.year;
+      const sameAsAfter = after === nextEvent.year;
+
+      const valid =
+        (nextEvent.year >= before && nextEvent.year <= after) ||
+        sameAsBefore ||
+        sameAsAfter;
+
+      if (valid) {
+        timeline.splice(position, 0, nextEvent);
+        renderTimeline();
+        loadNextEvent();
+        updateLiveScore();
+      } else {
+        gameOverDueToError = true;
+        nextEventEl.classList.add("hidden");
+        showErrorOverlay();
+      }
+    }
+
+    function updateLiveScore() {
+      liveScoreEl.textContent = timeline.length - 1;
+    }
+
+    function showErrorOverlay() {
+      errorOverlay.classList.add("visible");
+    }
+
+    function dismissError() {
+      errorOverlay.classList.remove("visible");
+      if (gameOverDueToError) {
+        endGame();
+      }
+    }
+
+    function endGame() {
+      gameOverEl.classList.remove("hidden");
+      nextEventEl.classList.add("hidden");
+      scoreEl.textContent = timeline.length - 1;
+    }
+
+    function restartGame() {
+      startGame();
+    }
+
+    startGame();
+  </script>
+</body>
+</html>
