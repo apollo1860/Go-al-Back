@@ -163,7 +163,7 @@
     }
 
     function startGame() {
-      events = shuffle([...allEvents]);
+      events = shuffle([...events]);
       currentIndex = 0;
       timeline = [events[currentIndex++]];
       renderTimeline();
