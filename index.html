@@ -11,33 +11,27 @@
       margin: 0;
       padding: 20px;
       text-align: center;
-      overflow-x: hidden;
     }
     .container {
       max-width: 500px;
       margin: auto;
-      position: relative;
-      z-index: 1;
     }
     h1 {
       margin-bottom: 5px;
     }
     .score-display {
       margin-top: 0;
-      font-size: 1rem;
-      color: #333;
     }
     .label {
+      margin: 10px 0 4px;
       font-size: 0.9em;
       color: #555;
-      margin: 6px 0 2px;
     }
     .timeline {
       list-style: none;
       padding: 0;
       margin: 20px 0;
       border-left: 2px solid #ccc;
-      min-height: 50px;
     }
     .timeline li {
       background: white;
@@ -46,10 +40,6 @@
       border-radius: 5px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       position: relative;
-      transition: transform 0.2s;
-    }
-    .timeline li:hover {
-      transform: scale(1.02);
     }
     .timeline li .year {
       font-size: 0.8em;
@@ -63,9 +53,6 @@
       height: 40px;
       border-radius: 4px;
     }
-    #next-event-container {
-      margin-top: 30px;
-    }
     #next-event {
       display: inline-block;
       padding: 12px 18px;
@@ -73,7 +60,6 @@
       color: white;
       border-radius: 5px;
       cursor: grab;
-      transition: transform 0.2s;
     }
     #next-event:active {
       cursor: grabbing;
@@ -81,13 +67,9 @@
     .hidden {
       display: none;
     }
-    #game-over {
-      margin-top: 30px;
-    }
     #errorOverlay {
       background-color: rgba(255, 0, 0, 0.9);
       color: white;
-      font-size: 1.4em;
       position: fixed;
       top: 0;
       left: 0;
@@ -98,14 +80,12 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 20px;
     }
     #errorOverlay.visible {
       display: flex;
     }
     #errorOverlay button {
       margin: 10px;
-      font-size: 1em;
       padding: 10px 20px;
       background: white;
       color: red;
@@ -113,9 +93,6 @@
       border-radius: 5px;
       font-weight: bold;
       cursor: pointer;
-    }
-    #errorOverlay button:hover {
-      background: #eee;
     }
   </style>
 </head>
@@ -143,8 +120,7 @@
   </div>
 
   <script>
-    // EVENTS werden im folgenden Block eingebettet
-   const events = [{ event: "Franz Beckenbauer veröffentlicht seinen Musikhit „Gute Freunde kann niemand trennen“", year: 1966 }, { event: "Der FC Bayern München gewinnt zum ersten Mal eine Bundesliga-Meisterschaft", year: 1969 }, { event: "Gerd Müller absolviert sein letztes Bundesliga-Spiel für den FC Bayern München", year: 1979 }, { event: "Cristiano Ronaldo holt seinen allerersten Champions-League-Titel", year: 2008 }, { event: "Lionel Messi holt seinen allerersten Champions-League-Titel", year: 2006 }, { event: "Lionel Messi wird mit Argentinien zum ersten Mal Weltmeister", year: 2022 }, { event: "Cristiano Ronaldo wird mit Portugal zum ersten Mal Europameister", year: 2016 }, { event: "Luis Figo wechselt vom FC Barcelona zum Ligarivalen Real Madrid", year: 2000 }, { event: "Deutschland wird zum zweiten Mal Weltmeister", year: 1974 }, { event: "Spanien wird zum ersten Mal Europameister", year: 1964 }, { event: "Spanien wird zum ersten Mal Weltmeister", year: 2010 }, { event: "Fabio Cannavaro gewinnt den Ballon D'Or", year: 2006 }, { event: "Manuel Neuer wechselt vom FC Schalke 04 zum FC Bayern München", year: 2011 }, { event: "Pelé schießt sein allererstes Länderspieltor", year: 1957 }, { event: "Miroslav Klose feiert sein Länderspiel-Debüt für Deutschland", year: 2001 }, { event: "Brasilien wird zum fünften Mal Weltmeister", year: 2002 }, { event: "Eden Hazard wechselt vom FC Chelsea London zu Real Madrid", year: 2019 }, { event: "Kylian Mbappé wechselt von Paris St. Germain zu Real Madrid", year: 2024 }, { event: "Joachim Löw wird Cheftrainer der deutschen Nationalmannschaft", year: 2006 }, { event: "Jürgen Klopp wird Cheftrainer vom FC Liverpool", year: 2015 }, { event: "Thomas Tuchel wird Cheftrainer vom FC Bayern München", year: 2023 }, { event: "Pep Guardiola wird Cheftrainer vom FC Barcelona", year: 2008 }, { event: "Lamine Yamal macht sein Profi-Debüt für den FC Barcelona", year: 2023 }, { event: "Deutschland besiegt Costa Rica bei einem Fußball-Weltmeisterschaftsspiel mit 4:2", year: 2022 }, { event: "Südafrika ist Gastgeber einer Fußball-Weltmeisterschaft", year: 2010 }, { event: "Borussia Dortmund gewinnt zum ersten Mal die Bundesliga-Meisterschaft", year: 1956 }, { event: "Bayer 04 Leverkusen gewinnt zum ersten Mal die Bundesliga-Meisterschaft", year: 2024 }, { event: "Uruguay wird zum ersten Mal Fußball-Weltmeister", year: 1930 }, { event: "Der Videobeweis (VAR) kommt zum ersten Mal bei einer Fußball-Weltmeisterschaft zum Einsatz", year: 2018 }, { event: "Just Fontaine trifft zwölf Mal bei einer Fußball-Europameisterschaft", year: 1960 }, { event: "Gianni Infantino wird neu zum FIFA-Präsidenten gewählt", year: 2016 }, { event: "Julian Nagelsmann wird Cheftrainer der deutschen Nationalmannschaft", year: 2023 }, { event: "Uli Hoeneß wird Manager beim FC Bayern München", year: 1979 }, { event: "Kevin De Bruyne wird geboren", year: 1991 }, { event: "Lamine Yamal wird geboren", year: 2007 }, { event: "José Mourinho wird geboren", year: 1963 }, { event: "Jupp Heynckes wird geboren", year: 1945 }, { event: "Borussia Mönchengladbach besiegt Borussia Dortmund in der Bundesliga mit 13:0", year: 1978 }, { event: "Dani Alves wird geboren", year: 1983 }, { event: "Der englische Fußballverband FA wird gegründet", year: 1863 }, { event: "Die FIFA wird gegründet", year: 1904 }, { event: "England gewinnt dank dem „Wembley-Tor“ seine erste und einzige Weltmeisterschaft", year: 1966 }, { event: "Das erste offizielle Frauen-Länderspiel zwischen Frankreich und der Niederlande findet statt", year: 1971 }, { event: "Eintracht Braunschweig und Jägermeister führen die Trikotwerbung in der Bundesliga ein", year: 1973 }, { event: "Deutschland und Österreich einigen sich auf den „Nichtangriffspakt von Gijon“", year: 1982 }, { event: "Die „Heysel-Katastrophe“ ereignet sich", year: 1985 }, { event: "Die Golden-Goal-Regel wird abgeschafft", year: 2004 }, { event: "Manchester United besiegt den FC Bayern München dank zwei Treffer in der Nachspielzeit", year: 1999 }, { event: "Der FC Bayern München besiegt Borussia Dortmund im deutschen Champions-League-Finale", year: 2013 }, { event: "Neymar wechselt für 222 Mio. € vom FC Barcelona zu Paris St. Germain", year: 2017 }, { event: "Lionel Messi verlässt den FC Barcelona", year: 2021 }, { event: "Cristiano Ronaldo verlässt Real Madrid", year: 2018 }, { event: "Real Madrid gewinnt die Champions-League zum 14. Mal", year: 2022 }, { event: "Spanien wird U17-, U21- und A-Nationalmannschaft-Europameister im gleichen Jahr", year: 2023 }, { event: "Alexia Putellas gewinnt zum ersten Mal den Ballon D'Or", year: 2021 }, { event: "Der FC Liverpool schlägt den AC Mailand im Champions-League Finale nach sensationeller Aufholjagd im Elfmeterschießen", year: 2005 }, { event: "Die FIFA versucht die Super League einzuführen und scheitert", year: 2021 }, { event: "Paris St. Germain gewinnt zum ersten Mal die Champions-League", year: 2025 }, { event: "Der TSV 1860 München gewinnt zum ersten Mal die Bundesliga", year: 1966 }, { event: "Der FC Bayern München stellt mit 101 Toren einen Torrekord in der Bundesliga auf", year: 1972 }, { event: "Günter Netzer wechselt sich in einem DFB-Pokalfinale selber ein", year: 1973 }, { event: "Kevin Keegan wechselt zum Hamburger SV", year: 1977 }, { event: "Der 1. FC Köln gewinnt mit einem 10:0 Sieg am letzten Spieltag die Bundesliga", year: 1977 }, { event: "Mario Basler beendet seine aktive Laufbahn", year: 2004 }, { event: "Bayer 04 Leverkusen verspielt die Meisterschaft am letzten Spieltag bei der SpVgg Unterhaching", year: 2000 }, { event: "Der FC Schalke 04 wird „Meister der Herzen“", year: 2001 }, { event: "Raùl wechselt von Real Madrid zum FC Schalke 04", year: 2010 }, { event: "Mats Hummels wechselt von Borussia Dortmund zurück zum FC Bayern München", year: 2016 }, { event: "Es finden auf der ganzen Welt Geisterspiele wegen Corona statt", year: 2020 }, { event: "Das „Jahrhundert-Spiel“ zwischen Deutschland und Italien findet statt", year: 1970 }, { event: "Die DDR schlägt die BRD in der Vorrunde einer Weltmeisterschaft", year: 1974 }, { event: "Johann Cruyff wird geboren", year: 1947 }, { event: "Gelbe und rote Karten werden das erste Mal bei einer Weltmeisterschaft eingesetzt", year: 1970 }, { event: "Johann Cruyff wechselt zum FC Barcelona", year: 1973 }, { event: "Die neuformierte FIFA Klub-WM findet zum ersten Mal statt", year: 2000 }, { event: "Michel Platini wird geboren", year: 1955 }, { event: "Gennaro Gattuso wird geboren", year: 1978 }, { event: "Francesco Totti beendet seine aktive Laufbahn", year: 2017 }, { event: "Der FC Red Bull Salzburg gewinnt zum ersten Mal die österreichische Bundesliga", year: 2007 }, { event: "Ailton wird Torschützenkönig in der Bundesliga", year: 2004 }, { event: "Die ACF Fiorentina muss Insolvenz anmelden", year: 2002 }, { event: "Ein Flugzeug mit Spielern des brasilianischen Erstligisten Chapocoense stürzt ab", year: 2016 }, { event: "Nottingham Forrest wird gegründet", year: 1865 }, { event: "Aston Villa wird gegründet", year: 1874 }, { event: "Der FC Bayern München wird gegründet", year: 1900 }, { event: "Ajax Amsterdam wird gegründet", year: 1900 }, { event: "Der FC Porto wird gegründet", year: 1893 }, { event: "Die Boca Juniors werden gegründet", year: 1905 }, { event: "Diego Maradona schießt gegen England das „Tor des Jahrhunderts“", year: 1986 }, { event: "Sergio Agüero schießt Manchester City in der 93. Minute zur ersten Meisterschaft seit 44 Jahren", year: 2012 }, { event: "Robin van Persie trifft per Flugkopfall als „fliegender Holländer“ gegen Spanien zum 1:1", year: 2014 }, { event: "Ronaldinho trifft per Lupfer von der Mittellinie gegen England", year: 2002 }, { event: "Luis Suárez beißt Georgio Chiellini bei einem WM-Spiel", year: 2014 }, { event: "Antonin Panenka prägt mit seinem kunstvollen Elfmeter bei einer Europameisterschaft ganze Generationen", year: 1976 }, { event: "Kroatien zieht in sein erstes WM-Finale ein", year: 2018 }, { event: "Xabi Alonso wird mit Bayer 04 Leverkusen ungeschlagen deutscher Meister", year: 2024 }, { event: "England gewinnt gegen Kolumbien erstmals ein Elfmeterschießen bei einer Weltmeisterschaft", year: 2018 }, { event: "Der FC Barcelona dreht in der Champions-League gegen Paris St. Germain eine 4:0-Hinspielniederlage und gewinnt mit 6:1", year: 2017 }, { event: "Eintracht Frankfurt gewinnt gegen die Glasgow Rangers die Europa-League", year: 2022 }, { event: "Eric Cantona wird nach einem Kung-Fu-Tritt gegen einen Fan für 8 Monate gesperrt", year: 1995 }, { event: "Lionel Messi trifft kurz vor Schluss im El Clásico und hält sein Trikot vor der Real-Madrid-Kurve in die Luft", year: 2017 }, { event: "Polen gewinnt nach einem 3:2-Erfolg über Ungarn die Goldmedaille im Fußball bei den Olympischen Spielen", year: 1972 }, { event: "Die Gelb-Rote Karte wird eingeführt", year: 1992 }, { event: "Die Abseitsregel wird eingeführt", year: 1863 }, { event: "Nationalmannschaften dürfen erstmals bei Weltmeisterschaften auswechseln", year: 1970 }, { event: "Jürgen Klinsmann tritt als Spieler des FC Bayern München vor Frust eine Werbebande ein", year: 1997 }, { event: "Deutschland besiegt die Türkei im Halbfinale einer Europameisterschaft im Elfmeterschießen", year: 2008 }, { event: "Sami Khedira feiert sein Debüt für die deutsche Nationalmannschaft", year: 2009 }, { event: "Mesut Özil feiert sein Debüt für die deutsche Nationalmannschaft", year: 2009 }, { event: "FC Montpellier feiert unter anderem mit Olivier Giroud seine Meisterschaft", year: 2012 }, { event: "Helmut Schön wird Cheftrainer der deutschen Nationalmannschaft", year: 1964 }, { event: "Holstein Kiel steigt zum ersten Mal in die 1. Bundesliga auf", year: 2023 }, { event: "Xabi Alonso wechselt zum FC Bayern München", year: 2014 }, { event: "Der FC Bayern München gewinnt zum ersten Mal das Sextuple", year: 2020 }, { event: "Der SV Werder Bremen verliert im Finale des UEFA-Cups gegen Shakhtar Donezk", year: 2009 }, { event: "Der FC Schalke 04 besiegt Zweitligist MSV Duisburg im Finale und gewinnt den DFB-Pokal", year: 2011 }, { event: "Der 1. FC Heidenheim steigt zum ersten Mal in die 1. Bundesliga auf", year: 2023 }, { event: "Der (jetzige) DFB gründet sich", year: 1949 }, { event: "Das Flugzeug mit der damaligen italienischen Spitzenmannschaft Gran Torino stürzt ab", year: 1949 }, { event: "Alfrédo di Stefano wechselt zu Real Madrid", year: 1953 }, { event: "Torhüter Lev Yashin gewinnt den Ballon D'Or", year: 1963 }, { event: "Fritz Walter wird zum Kapitän der deutschen Nationalmannschaft ernannt", year: 1951 }, { event: "Lucien Laurent erzielt das erste WM-Tor der Geschichte", year: 1930 }, { event: "Der FC Schalke 04 gewinnt zum ersten Mal eine Deutsche Meisterschaft", year: 1934 }, { event: "Oldřich Nejedlý wird Torschützenkönig einer Weltmeisterschaft", year: 1934 }, { event: "Benfica Lissabon besiegt Real Madrid mit 5:3 im Finale des Pokals der Landesmeister", year: 1962 }, { event: "Franz Beckenbauer beendet seine Länderspielkarriere bei der deutschen Nationalmannschaft", year: 1977 }, { event: "Eintracht Frankfurt schlägt Borussia Mönchengladbach im deutschen Finale des UEFA-Cups", year: 1980 }, { event: "Paolo Rossi wird Torschützenkönig einer Weltmeisterschaft, nachdem er nach einem Wettskandal zurückkehrt", year: 1982 }, { event: "Diego Maradona feiert sein Debüt für die argentinische Nationalmannschaft", year: 1977 }, { event: "Diego Maradona erzielt mit der „Hand Gottes“ einen Treffer gegen England", year: 1986 }, { event: "Beim FA-Cup-Spiel FC Liverpool gegen Nottingham Forrest ereignet sich die „Hillsborough-Katastrophe“", year: 1989 }, { event: "Rudi Völler wird bei einer U21-Europameisterschaft zum Spieler des Turniers gewählt", year: 1982 }, { event: "Zlatan Ibrahimović trifft im Freundschaftsspiel gegen England per Fallrückzieher aus ca. 35 Metern", year: 2012 }, { event: "Das Länderspiel zwischen Brasilien und Uruguay besuchen insgesamt 199.854 Zuschauer live im Stadion", year: 1950 }, { event: "Australien besiegt im WM-Qualifikationsspiel Amerikanisch-Samoa mit 31:0", year: 2001 }, { event: "Gibraltar wird offizielles UEFA-Mitglied", year: 2013 }, { event: "Georgien qualifiziert sich erstmals für eine Europameisterschaft", year: 2024 }, { event: "Albanien qualifiziert sich erstmals für eine Europameisterschaft", year: 2016 }, { event: "Slowenien qualifiziert sich erstmals für eine Weltmeisterschaft", year: 2002 }, { event: "Die Slowakei qualifiziert sich erstmals für eine Weltmeisterschaft", year: 2010 }, { event: "Kanada qualifiziert sich erstmals für eine Weltmeisterschaft", year: 1986 }, { event: "Angola qualifiziert sich erstmals für eine Weltmeisterschaft", year: 2006 }, { event: "Kuba qualifiziert sich erstmals für eine Weltmeisterschaft", year: 1938 }, { event: "Der Verein Sheffield FC wird gegründet", year: 1857 }];
+    let events = [{ event: "Franz Beckenbauer veröffentlicht seinen Musikhit „Gute Freunde kann niemand trennen“", year: 1966 }, { event: "Der FC Bayern München gewinnt zum ersten Mal eine Bundesliga-Meisterschaft", year: 1969 }, { event: "Gerd Müller absolviert sein letztes Bundesliga-Spiel für den FC Bayern München", year: 1979 }, { event: "Cristiano Ronaldo holt seinen allerersten Champions-League-Titel", year: 2008 }, { event: "Lionel Messi holt seinen allerersten Champions-League-Titel", year: 2006 }, { event: "Lionel Messi wird mit Argentinien zum ersten Mal Weltmeister", year: 2022 }, { event: "Cristiano Ronaldo wird mit Portugal zum ersten Mal Europameister", year: 2016 }, { event: "Luis Figo wechselt vom FC Barcelona zum Ligarivalen Real Madrid", year: 2000 }, { event: "Deutschland wird zum zweiten Mal Weltmeister", year: 1974 }, { event: "Spanien wird zum ersten Mal Europameister", year: 1964 }, { event: "Spanien wird zum ersten Mal Weltmeister", year: 2010 }, { event: "Fabio Cannavaro gewinnt den Ballon D'Or", year: 2006 }, { event: "Manuel Neuer wechselt vom FC Schalke 04 zum FC Bayern München", year: 2011 }, { event: "Pelé schießt sein allererstes Länderspieltor", year: 1957 }, { event: "Miroslav Klose feiert sein Länderspiel-Debüt für Deutschland", year: 2001 }, { event: "Brasilien wird zum fünften Mal Weltmeister", year: 2002 }, { event: "Eden Hazard wechselt vom FC Chelsea London zu Real Madrid", year: 2019 }, { event: "Kylian Mbappé wechselt von Paris St. Germain zu Real Madrid", year: 2024 }, { event: "Joachim Löw wird Cheftrainer der deutschen Nationalmannschaft", year: 2006 }, { event: "Jürgen Klopp wird Cheftrainer vom FC Liverpool", year: 2015 }, { event: "Thomas Tuchel wird Cheftrainer vom FC Bayern München", year: 2023 }, { event: "Pep Guardiola wird Cheftrainer vom FC Barcelona", year: 2008 }, { event: "Lamine Yamal macht sein Profi-Debüt für den FC Barcelona", year: 2023 }, { event: "Deutschland besiegt Costa Rica bei einem Fußball-Weltmeisterschaftsspiel mit 4:2", year: 2022 }, { event: "Südafrika ist Gastgeber einer Fußball-Weltmeisterschaft", year: 2010 }, { event: "Borussia Dortmund gewinnt zum ersten Mal die Bundesliga-Meisterschaft", year: 1956 }, { event: "Bayer 04 Leverkusen gewinnt zum ersten Mal die Bundesliga-Meisterschaft", year: 2024 }, { event: "Uruguay wird zum ersten Mal Fußball-Weltmeister", year: 1930 }, { event: "Der Videobeweis (VAR) kommt zum ersten Mal bei einer Fußball-Weltmeisterschaft zum Einsatz", year: 2018 }, { event: "Just Fontaine trifft zwölf Mal bei einer Fußball-Europameisterschaft", year: 1960 }, { event: "Gianni Infantino wird neu zum FIFA-Präsidenten gewählt", year: 2016 }, { event: "Julian Nagelsmann wird Cheftrainer der deutschen Nationalmannschaft", year: 2023 }, { event: "Uli Hoeneß wird Manager beim FC Bayern München", year: 1979 }, { event: "Kevin De Bruyne wird geboren", year: 1991 }, { event: "Lamine Yamal wird geboren", year: 2007 }, { event: "José Mourinho wird geboren", year: 1963 }, { event: "Jupp Heynckes wird geboren", year: 1945 }, { event: "Borussia Mönchengladbach besiegt Borussia Dortmund in der Bundesliga mit 13:0", year: 1978 }, { event: "Dani Alves wird geboren", year: 1983 }, { event: "Der englische Fußballverband FA wird gegründet", year: 1863 }, { event: "Die FIFA wird gegründet", year: 1904 }, { event: "England gewinnt dank dem „Wembley-Tor“ seine erste und einzige Weltmeisterschaft", year: 1966 }, { event: "Das erste offizielle Frauen-Länderspiel zwischen Frankreich und der Niederlande findet statt", year: 1971 }, { event: "Eintracht Braunschweig und Jägermeister führen die Trikotwerbung in der Bundesliga ein", year: 1973 }, { event: "Deutschland und Österreich einigen sich auf den „Nichtangriffspakt von Gijon“", year: 1982 }, { event: "Die „Heysel-Katastrophe“ ereignet sich", year: 1985 }, { event: "Die Golden-Goal-Regel wird abgeschafft", year: 2004 }, { event: "Manchester United besiegt den FC Bayern München dank zwei Treffer in der Nachspielzeit", year: 1999 }, { event: "Der FC Bayern München besiegt Borussia Dortmund im deutschen Champions-League-Finale", year: 2013 }, { event: "Neymar wechselt für 222 Mio. € vom FC Barcelona zu Paris St. Germain", year: 2017 }, { event: "Lionel Messi verlässt den FC Barcelona", year: 2021 }, { event: "Cristiano Ronaldo verlässt Real Madrid", year: 2018 }, { event: "Real Madrid gewinnt die Champions-League zum 14. Mal", year: 2022 }, { event: "Spanien wird U17-, U21- und A-Nationalmannschaft-Europameister im gleichen Jahr", year: 2023 }, { event: "Alexia Putellas gewinnt zum ersten Mal den Ballon D'Or", year: 2021 }, { event: "Der FC Liverpool schlägt den AC Mailand im Champions-League Finale nach sensationeller Aufholjagd im Elfmeterschießen", year: 2005 }, { event: "Die FIFA versucht die Super League einzuführen und scheitert", year: 2021 }, { event: "Paris St. Germain gewinnt zum ersten Mal die Champions-League", year: 2025 }, { event: "Der TSV 1860 München gewinnt zum ersten Mal die Bundesliga", year: 1966 }, { event: "Der FC Bayern München stellt mit 101 Toren einen Torrekord in der Bundesliga auf", year: 1972 }, { event: "Günter Netzer wechselt sich in einem DFB-Pokalfinale selber ein", year: 1973 }, { event: "Kevin Keegan wechselt zum Hamburger SV", year: 1977 }, { event: "Der 1. FC Köln gewinnt mit einem 10:0 Sieg am letzten Spieltag die Bundesliga", year: 1977 }, { event: "Mario Basler beendet seine aktive Laufbahn", year: 2004 }, { event: "Bayer 04 Leverkusen verspielt die Meisterschaft am letzten Spieltag bei der SpVgg Unterhaching", year: 2000 }, { event: "Der FC Schalke 04 wird „Meister der Herzen“", year: 2001 }, { event: "Raùl wechselt von Real Madrid zum FC Schalke 04", year: 2010 }, { event: "Mats Hummels wechselt von Borussia Dortmund zurück zum FC Bayern München", year: 2016 }, { event: "Es finden auf der ganzen Welt Geisterspiele wegen Corona statt", year: 2020 }, { event: "Das „Jahrhundert-Spiel“ zwischen Deutschland und Italien findet statt", year: 1970 }, { event: "Die DDR schlägt die BRD in der Vorrunde einer Weltmeisterschaft", year: 1974 }, { event: "Johann Cruyff wird geboren", year: 1947 }, { event: "Gelbe und rote Karten werden das erste Mal bei einer Weltmeisterschaft eingesetzt", year: 1970 }, { event: "Johann Cruyff wechselt zum FC Barcelona", year: 1973 }, { event: "Die neuformierte FIFA Klub-WM findet zum ersten Mal statt", year: 2000 }, { event: "Michel Platini wird geboren", year: 1955 }, { event: "Gennaro Gattuso wird geboren", year: 1978 }, { event: "Francesco Totti beendet seine aktive Laufbahn", year: 2017 }, { event: "Der FC Red Bull Salzburg gewinnt zum ersten Mal die österreichische Bundesliga", year: 2007 }, { event: "Ailton wird Torschützenkönig in der Bundesliga", year: 2004 }, { event: "Die ACF Fiorentina muss Insolvenz anmelden", year: 2002 }, { event: "Ein Flugzeug mit Spielern des brasilianischen Erstligisten Chapocoense stürzt ab", year: 2016 }, { event: "Nottingham Forrest wird gegründet", year: 1865 }, { event: "Aston Villa wird gegründet", year: 1874 }, { event: "Der FC Bayern München wird gegründet", year: 1900 }, { event: "Ajax Amsterdam wird gegründet", year: 1900 }, { event: "Der FC Porto wird gegründet", year: 1893 }, { event: "Die Boca Juniors werden gegründet", year: 1905 }, { event: "Diego Maradona schießt gegen England das „Tor des Jahrhunderts“", year: 1986 }, { event: "Sergio Agüero schießt Manchester City in der 93. Minute zur ersten Meisterschaft seit 44 Jahren", year: 2012 }, { event: "Robin van Persie trifft per Flugkopfall als „fliegender Holländer“ gegen Spanien zum 1:1", year: 2014 }, { event: "Ronaldinho trifft per Lupfer von der Mittellinie gegen England", year: 2002 }, { event: "Luis Suárez beißt Georgio Chiellini bei einem WM-Spiel", year: 2014 }, { event: "Antonin Panenka prägt mit seinem kunstvollen Elfmeter bei einer Europameisterschaft ganze Generationen", year: 1976 }, { event: "Kroatien zieht in sein erstes WM-Finale ein", year: 2018 }, { event: "Xabi Alonso wird mit Bayer 04 Leverkusen ungeschlagen deutscher Meister", year: 2024 }, { event: "England gewinnt gegen Kolumbien erstmals ein Elfmeterschießen bei einer Weltmeisterschaft", year: 2018 }, { event: "Der FC Barcelona dreht in der Champions-League gegen Paris St. Germain eine 4:0-Hinspielniederlage und gewinnt mit 6:1", year: 2017 }, { event: "Eintracht Frankfurt gewinnt gegen die Glasgow Rangers die Europa-League", year: 2022 }, { event: "Eric Cantona wird nach einem Kung-Fu-Tritt gegen einen Fan für 8 Monate gesperrt", year: 1995 }, { event: "Lionel Messi trifft kurz vor Schluss im El Clásico und hält sein Trikot vor der Real-Madrid-Kurve in die Luft", year: 2017 }, { event: "Polen gewinnt nach einem 3:2-Erfolg über Ungarn die Goldmedaille im Fußball bei den Olympischen Spielen", year: 1972 }, { event: "Die Gelb-Rote Karte wird eingeführt", year: 1992 }, { event: "Die Abseitsregel wird eingeführt", year: 1863 }, { event: "Nationalmannschaften dürfen erstmals bei Weltmeisterschaften auswechseln", year: 1970 }, { event: "Jürgen Klinsmann tritt als Spieler des FC Bayern München vor Frust eine Werbebande ein", year: 1997 }, { event: "Deutschland besiegt die Türkei im Halbfinale einer Europameisterschaft im Elfmeterschießen", year: 2008 }, { event: "Sami Khedira feiert sein Debüt für die deutsche Nationalmannschaft", year: 2009 }, { event: "Mesut Özil feiert sein Debüt für die deutsche Nationalmannschaft", year: 2009 }, { event: "FC Montpellier feiert unter anderem mit Olivier Giroud seine Meisterschaft", year: 2012 }, { event: "Helmut Schön wird Cheftrainer der deutschen Nationalmannschaft", year: 1964 }, { event: "Holstein Kiel steigt zum ersten Mal in die 1. Bundesliga auf", year: 2023 }, { event: "Xabi Alonso wechselt zum FC Bayern München", year: 2014 }, { event: "Der FC Bayern München gewinnt zum ersten Mal das Sextuple", year: 2020 }, { event: "Der SV Werder Bremen verliert im Finale des UEFA-Cups gegen Shakhtar Donezk", year: 2009 }, { event: "Der FC Schalke 04 besiegt Zweitligist MSV Duisburg im Finale und gewinnt den DFB-Pokal", year: 2011 }, { event: "Der 1. FC Heidenheim steigt zum ersten Mal in die 1. Bundesliga auf", year: 2023 }, { event: "Der (jetzige) DFB gründet sich", year: 1949 }, { event: "Das Flugzeug mit der damaligen italienischen Spitzenmannschaft Gran Torino stürzt ab", year: 1949 }, { event: "Alfrédo di Stefano wechselt zu Real Madrid", year: 1953 }, { event: "Torhüter Lev Yashin gewinnt den Ballon D'Or", year: 1963 }, { event: "Fritz Walter wird zum Kapitän der deutschen Nationalmannschaft ernannt", year: 1951 }, { event: "Lucien Laurent erzielt das erste WM-Tor der Geschichte", year: 1930 }, { event: "Der FC Schalke 04 gewinnt zum ersten Mal eine Deutsche Meisterschaft", year: 1934 }, { event: "Oldřich Nejedlý wird Torschützenkönig einer Weltmeisterschaft", year: 1934 }, { event: "Benfica Lissabon besiegt Real Madrid mit 5:3 im Finale des Pokals der Landesmeister", year: 1962 }, { event: "Franz Beckenbauer beendet seine Länderspielkarriere bei der deutschen Nationalmannschaft", year: 1977 }, { event: "Eintracht Frankfurt schlägt Borussia Mönchengladbach im deutschen Finale des UEFA-Cups", year: 1980 }, { event: "Paolo Rossi wird Torschützenkönig einer Weltmeisterschaft, nachdem er nach einem Wettskandal zurückkehrt", year: 1982 }, { event: "Diego Maradona feiert sein Debüt für die argentinische Nationalmannschaft", year: 1977 }, { event: "Diego Maradona erzielt mit der „Hand Gottes“ einen Treffer gegen England", year: 1986 }, { event: "Beim FA-Cup-Spiel FC Liverpool gegen Nottingham Forrest ereignet sich die „Hillsborough-Katastrophe“", year: 1989 }, { event: "Rudi Völler wird bei einer U21-Europameisterschaft zum Spieler des Turniers gewählt", year: 1982 }, { event: "Zlatan Ibrahimović trifft im Freundschaftsspiel gegen England per Fallrückzieher aus ca. 35 Metern", year: 2012 }, { event: "Das Länderspiel zwischen Brasilien und Uruguay besuchen insgesamt 199.854 Zuschauer live im Stadion", year: 1950 }, { event: "Australien besiegt im WM-Qualifikationsspiel Amerikanisch-Samoa mit 31:0", year: 2001 }, { event: "Gibraltar wird offizielles UEFA-Mitglied", year: 2013 }, { event: "Georgien qualifiziert sich erstmals für eine Europameisterschaft", year: 2024 }, { event: "Albanien qualifiziert sich erstmals für eine Europameisterschaft", year: 2016 }, { event: "Slowenien qualifiziert sich erstmals für eine Weltmeisterschaft", year: 2002 }, { event: "Die Slowakei qualifiziert sich erstmals für eine Weltmeisterschaft", year: 2010 }, { event: "Kanada qualifiziert sich erstmals für eine Weltmeisterschaft", year: 1986 }, { event: "Angola qualifiziert sich erstmals für eine Weltmeisterschaft", year: 2006 }, { event: "Kuba qualifiziert sich erstmals für eine Weltmeisterschaft", year: 1938 }, { event: "Der Verein Sheffield FC wird gegründet", year: 1857 }];
 
     let timeline = [];
     let currentIndex = 0;
@@ -158,22 +134,22 @@
     const liveScoreEl = document.getElementById("live-score");
     const errorOverlay = document.getElementById("errorOverlay");
 
-  function shuffle(arr) {
-  return arr.sort(() => Math.random() - 0.5);
-}
+    function shuffle(arr) {
+      return arr.sort(() => Math.random() - 0.5);
+    }
 
-   function startGame() {
-  events = shuffle([...events]); // Kopie erstellen und mischen
-  currentIndex = 0;
-  timeline = [events[currentIndex++]];
-  renderTimeline();
-  loadNextEvent();
-  updateLiveScore();
-  gameOverDueToError = false;
-  errorOverlay.classList.remove("visible");
-  gameOverEl.classList.add("hidden");
-  nextEventEl.classList.remove("hidden");
-}
+    function startGame() {
+      events = shuffle([...events]);
+      currentIndex = 0;
+      timeline = [events[currentIndex++]];
+      renderTimeline();
+      loadNextEvent();
+      updateLiveScore();
+      gameOverDueToError = false;
+      errorOverlay.classList.remove("visible");
+      gameOverEl.classList.add("hidden");
+      nextEventEl.classList.remove("hidden");
+    }
 
     function renderTimeline() {
       timelineEl.innerHTML = "";
@@ -212,7 +188,6 @@
 
       nextEvent = events[currentIndex++];
       nextEventEl.textContent = nextEvent.event;
-
       nextEventEl.ondragstart = (e) => {
         e.dataTransfer.setData("text/plain", "drop-event");
       };
@@ -227,8 +202,7 @@
 
       const valid =
         (nextEvent.year >= before && nextEvent.year <= after) ||
-        sameAsBefore ||
-        sameAsAfter;
+        sameAsBefore || sameAsAfter;
 
       if (valid) {
         timeline.splice(position, 0, nextEvent);
@@ -267,6 +241,7 @@
       startGame();
     }
 
+    // Startspiel initialisieren
     startGame();
   </script>
 </body>
