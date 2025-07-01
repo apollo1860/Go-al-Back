@@ -99,6 +99,7 @@
 <body>
   <div id="errorOverlay">
     <div>❌ Falsch einsortiert!</div>
+    <div id="errorYear" style="margin-top: 10px; font-size: 1.2em;"></div>
     <button onclick="dismissError()">OK</button>
     <button onclick="restartGame()">Neustart</button>
   </div>
@@ -220,9 +221,11 @@
       liveScoreEl.textContent = timeline.length - 1;
     }
 
-    function showErrorOverlay() {
-      errorOverlay.classList.add("visible");
-    }
+function showErrorOverlay() {
+  errorOverlay.classList.add("visible");
+  document.getElementById("errorYear").textContent = `Das richtige Jahr war: ${nextEvent.year}`;
+}
+
 
     function dismissError() {
       errorOverlay.classList.remove("visible");
