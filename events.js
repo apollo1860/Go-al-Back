@@ -9,7 +9,7 @@ const events = [
   { event: "Der FC Bayern München beruft eine Pressekonferenz ein – um Journalisten für Kritik an Spielern öffentlich zu rügen", year: 2018 },
   { event: "Christoph Daum willigt aufgrund seines \"absolut reinem Gewissen\" einem Drogentest zu, der sich als postiv herausstellt", year: 2000 },
   { event: "Giovanni Trappatoni hält eine Wutrede bei einer Pressekonferenz, in der legendäre Zitate wie \"Was erlauben Strunz?\" oder \"Ich habe fertig!\"", year: 1998 },
-  { event: "Die Italiener laufen als politisches Statement für Mussolini bei einer WM im schwarzen Trikot auf", 1938 },
+  { event: "Die Italiener laufen als politisches Statement für Mussolini bei einer WM im schwarzen Trikot auf", year: 1938 },
   { event: "Arjen Robben wechselt zum FC Bayern München", year: 2009 },
   { event: "Die umstrittene Bronzestatue am Flughafen Madeiras von Cristiano Ronaldo wird enthüllt", year: 2017 },
   { event: "Neymar wechselt zum FC Barcelona", year: 2013 },
