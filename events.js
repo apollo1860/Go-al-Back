@@ -1,5 +1,7 @@
 const events = [
   { event: "Franz Beckenbauer veröffentlicht seinen Musikhit \"Gute Freunde kann niemand trennen\"", year: 1966 },
+  { event: "Jan Koller muss ab der 67. im Bundesliga-Spiel gegen den FC Bayern München ins Tor - er pariert ohne Fehler", year: 2002 },
+  { event: "Der FC St. Pauli steigt zum ersten Mal in die 1. Bundesliga auf ", year: 1976 },
   { event: "Franck Ribéry wechselt zum FC Bayern München", year: 2007 },
   { event: "Der angetrunkene Schiedsrichter Wolf-Dieter Ahlenfelder pfeift im Bundesliga-Spiel zwischen dem SV Werder Bremen und Hannover 96 bereits nach 32 Minuten zur Halbzeit", year: 1975 },
   { event: "Jens Lehmann pinkelt beim Spiel vom VfB Stuttgart gegen Bayer 04 Leverkusen, nachdem er hinter die Werbebande geklettert ist, hinter die Werbetonne", year: 2009 },
