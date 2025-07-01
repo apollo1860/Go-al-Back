@@ -141,18 +141,20 @@
       return arr.sort(() => Math.random() - 0.5);
     }
 
-    function startGame() {
-      events = shuffle([...events]);
-      currentIndex = 0;
-      timeline = [events[currentIndex++]];
-      renderTimeline();
-      loadNextEvent();
-      updateLiveScore();
-      gameOverDueToError = false;
-      errorOverlay.classList.remove("visible");
-      gameOverEl.classList.add("hidden");
-      nextEventEl.classList.remove("hidden");
-    }
+function startGame() {
+  const shuffledEvents = shuffle([...events]);
+  window.currentEventSet = shuffledEvents; // ✅ global verfügbar machen
+
+  currentIndex = 0;
+  timeline = [shuffledEvents[currentIndex++]];
+  renderTimeline();
+  loadNextEvent();
+  updateLiveScore();
+  gameOverDueToError = false;
+  errorOverlay.classList.remove("visible");
+  gameOverEl.classList.add("hidden");
+  nextEventEl.classList.remove("hidden");
+}
 
     function renderTimeline() {
       timelineEl.innerHTML = "";
@@ -189,7 +191,7 @@
         return;
       }
 
-      nextEvent = events[currentIndex++];
+    nextEvent = window.currentEventSet[currentIndex++];
       nextEventEl.textContent = nextEvent.event;
       nextEventEl.ondragstart = (e) => {
         e.dataTransfer.setData("text/plain", "drop-event");
@@ -248,6 +250,7 @@ function showErrorOverlay() {
 
     // Startspiel initialisieren
     startGame();
+    
   </script>
 </body>
 </html>
