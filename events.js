@@ -57,7 +57,7 @@ const events = [
   { event: "Uli Hoeneß wird wegen Steuerhinterziehung in Höhe von über 28 Mio. € zu einer Haftstrafe von 3,5 Jahren verurteilt", year: 2014 },
   { event: "FC Bayern München-Profi Breno wird wegen Brandstiftung zu einer Haftstrafe von 3 Jahren und 9 Monaten verurteilt", year: 2012 },
   { event: "Robert Enke nimmt sich im Alter von 32 Jahren das Leben", year: 2009 },
-  { event: "Die Mannschaft des brasilianischen Erstligisten Chapocoense stürzt über den Bergen von Kolumbien ab", year: 2016 },
+  { event: "Die Mannschaft des brasilianischen Erstligisten Chapocoense stürzt mit dem Flugzeug über den Bergen von Kolumbien ab", year: 2016 },
   { event: "Die Mannschaft von Manchester United stürzt bei der Landung auf dem Flughafen München-Riem ab", year: 1958 },
   { event: "Der Fan-Song \"Es gibt nur ein Rudi Völler\" wird veröffentlicht", year: 2002 },
   { event: "Die FIFA vergibt die Weltmeisterschaft 2022 nach Katar", year: 2010 },
