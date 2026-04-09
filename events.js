@@ -24,7 +24,7 @@ const events = [
 { event: "Walter Frosch wird mit Zigaretten in den Stutzen interviewt", year: 2007 },
 { event: "Vincent Kompany wird Trainer beim FC Bayern München", year: 2024 },
 { event: "Der 1.FC Heidenheim steigt zum ersten Mal in die Bundesliga auf", year: 2023 },
-{ event: "Mario Balotelli jubelt mit einem T-Shirt und der Aufschrift \"Why always me\"", year: 1963 },
+{ event: "Mario Balotelli jubelt mit einem T-Shirt und der Aufschrift \"Why always me\"", year: 2011 },
 { event: "Pep Guardiola wird geboren", year: 1971 },
 { event: "Ottmar Hitzfeld wird geboren", year: 1949 },
 { event: "Die erste FIFA-Frauen-Fußball-Weltmeisterschaft findet in China statt", year: 1991 },
