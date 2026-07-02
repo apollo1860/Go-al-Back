@@ -5,7 +5,7 @@ const events = [
 { event: "Der neue Streaming-Dienst WOW löst das alte Sky Ticket ab", year: 2022 },
 { event: "Thorsten Legat nimmt erstmals bei \"Ich bin ein Star - Holt mich hier raus\" teil", year: 2016 },
 { event: "Rudi Assauer stirbt", year: 2019 },
-{ event: "Uli Hoeneß kritisiert Juan Bernat und bezeichnet seine Leistung als \"Scheißdreck\"" },
+{ event: "Uli Hoeneß kritisiert Juan Bernat und bezeichnet seine Leistung als Scheißdreck", year: 2018 },
 { event: "Qatar Airways wird Sponsor des FC Bayern München", year: 2018 },
 { event: "Roman Abramowitsch verkauft Chelsea F.C.", year: 2022 },
 { event: "Mykhailo Mudryk wird aufgrund eines positiven Dopingtests gesperrt", year: 2024 },
