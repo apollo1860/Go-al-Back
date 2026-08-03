@@ -1,5 +1,6 @@
 const events = [
 { event: "Franz Beckenbauer veröffentlicht seinen Musikhit \"Gute Freunde kann niemand trennen\"", year: 1966 },
+{ event: "Die Bundesliga startet einmalig mit 20 Mannschaften in eine Saison", year: 1991 },
 { event: "MagentaTV überträgt erstmals eine Europameisterschaft", year: 2024 },
 { event: "DAZN ist erstmals in Deutschland verfügbar", year: 2016 },
 { event: "Der neue Streaming-Dienst WOW löst das alte Sky Ticket ab", year: 2022 },
